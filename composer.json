@@ -1,6 +1,6 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
+    "name": "entreparentesys/entreparentesys",
+    "description": "Primera version de entreparentesys.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
