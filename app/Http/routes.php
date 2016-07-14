@@ -18,3 +18,9 @@ Route::get('/', function () {
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
+
+
+/**
+ * example pivot table
+ */
+Route::get('/pivotTable', 'PivotController@index');
