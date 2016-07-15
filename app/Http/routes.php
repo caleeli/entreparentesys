@@ -17,10 +17,17 @@ Route::get('/', function () {
 
 Route::auth();
 
-Route::get('/home', 'HomeController@index');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/home', 'HomeController@index');
 
+    /**
+     * example pivot table
+     */
 
-/**
- * example pivot table
- */
-Route::get('/pivotTable', 'PivotController@index');
+    Route::get('pivotTable', ['uses' => 'PivotController@index', 'as' => 'pivotTable']);
+    //Route::post('pivotTable', ['uses' => 'PivotController@postPivotTable', 'as' => 'pivotTable']);
+
+    Route::get('importCsv', ['uses' => 'PivotController@importCsv', 'as' => 'importCsv']);
+    //Route::post('importCsv', ['uses' => 'PivotController@postImportCsv', 'as' => 'importCsv']);
+});
+

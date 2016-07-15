@@ -13,6 +13,8 @@
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
+    @stack('css-head')
+
     @yield('header')
 
 </head>
@@ -75,5 +77,8 @@
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+
+    @stack('script-head')
+
 </body>
 </html>

@@ -13,7 +13,7 @@ class PivotController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //
     }
 
     /**
@@ -23,6 +23,16 @@ class PivotController extends Controller
      */
     public function index()
     {
-        return view('pivot');
+        return view('pivotTable.pivot');
+    }
+
+    /**
+     * Show the application pivot table import csv.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function importCsv()
+    {
+        return view('pivotTable.importCsv');
     }
 }
