@@ -4,7 +4,7 @@ $(function(){
     var renderers = $.extend($.pivotUtilities.renderers,
         $.pivotUtilities.gchart_renderers);
 
-    $.getJSON("comercializacion.json", function(mps) {
+    $.getJSON("/data/comercializacion", function(mps) {
         $("#output").pivotUI(
             mps,
             {

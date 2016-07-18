@@ -15,5 +15,6 @@ return [
     'login' => 'Ingresar',
     'register' => 'Registrar',
     'logout' => 'Salir',
+    'welcome' => 'Bienvenido',
 
 ];

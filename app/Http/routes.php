@@ -18,7 +18,8 @@ Route::get('/', function () {
 Route::auth();
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/home', 'HomeController@index');
+//    Route::get('/home', 'HomeController@index');
+    Route::get('home', ['uses' => 'PivotController@index', 'as' => 'pivotTable']);
 
     /**
      * example pivot table
@@ -29,5 +30,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('importCsv', ['uses' => 'PivotController@importCsv', 'as' => 'importCsv']);
     //Route::post('importCsv', ['uses' => 'PivotController@postImportCsv', 'as' => 'importCsv']);
-});
 
+    //example data
+    Route::get('/data/comercializacion', 'DataController@comercializacion');
+});
