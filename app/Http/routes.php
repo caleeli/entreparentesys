@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Route::auth();
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth','web']], function () {
 //    Route::get('/home', 'HomeController@index');
     Route::get('home', ['uses' => 'PivotController@index', 'as' => 'pivotTable']);
 
@@ -33,4 +33,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     //example data
     Route::get('/data/comercializacion', 'DataController@comercializacion');
+
+    //apis
+    Route::resource('/api/v1/reports', 'ReportsController');
+    Route::resource('/api/v1/folders', 'FoldersController');
 });
