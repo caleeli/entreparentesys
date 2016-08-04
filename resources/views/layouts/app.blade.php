@@ -18,7 +18,7 @@
     @yield('header')
 
 </head>
-<body id="app-layout">
+<body id="app-layout" style="background:url('../img/landing/header_two.jpg') 0 100% no-repeat;background-size: auto 100%;">
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
             <div class="navbar-header">
@@ -33,7 +33,7 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ trans('labels.system') }}
+                    <img src="/img/logo.jpg" height="40" width="120" style="margin-top: -10px;">
                 </a>
             </div>
 
