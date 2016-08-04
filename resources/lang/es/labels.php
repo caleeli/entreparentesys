@@ -16,5 +16,11 @@ return [
     'register' => 'Registrar',
     'logout' => 'Salir',
     'welcome' => 'Bienvenido',
+    'features' => 'Características',
+    'team' => 'Equipo',
+    'testimonials' => 'Testimonios',
+    'pricing' => 'Precios',
+    'contact' => 'Contactar',
+    'learn_more' => 'Conoce más',
 
 ];

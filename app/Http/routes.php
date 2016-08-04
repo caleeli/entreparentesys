@@ -19,7 +19,7 @@ Route::auth();
 
 Route::group(['middleware' => ['auth','web']], function () {
 //    Route::get('/home', 'HomeController@index');
-    Route::get('home', ['uses' => 'PivotController@index', 'as' => 'pivotTable']);
+    Route::get('/home', ['uses' => 'PivotController@index', 'as' => 'pivotTable']);
 
     /**
      * example pivot table
