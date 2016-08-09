@@ -35,6 +35,9 @@ Route::group(['middleware' => ['auth','web']], function () {
     Route::get('/data/comercializacion', 'DataController@comercializacion');
 
     //apis
-    Route::resource('/api/v1/reports', 'ReportsController');
-    Route::resource('/api/v1/folders', 'FoldersController');
+    Route::group(['prefix' => 'api/v1'], FUNCTION(){
+        Route::resource('reports', 'ReportsController');
+        Route::resource('folders', 'FoldersController');
+        Route::resource('fileCsv', 'FileCsv', ['only' => ['store', 'show']]);
+    });
 });
