@@ -34,6 +34,9 @@ Route::group(['middleware' => ['auth','web']], function () {
     //example data
     Route::get('/data/comercializacion', 'DataController@comercializacion');
 
+    //import-excel
+    Route::resource('/import-excel', 'ImportExcelController');
+
     //apis
     Route::group(['prefix' => 'api/v1'], FUNCTION(){
         Route::resource('reports', 'ReportsController');

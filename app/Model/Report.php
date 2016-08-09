@@ -33,7 +33,7 @@ class Report extends Model
     /**
      * Boot
      */
-    public function boot()
+    public static function boot()
     {
         static::creating(function(Report $model) {
             $model->owner_id = Auth::user() ? Auth::user()->id : 1;

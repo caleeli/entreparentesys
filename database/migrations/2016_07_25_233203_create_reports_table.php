@@ -15,7 +15,8 @@ class CreateReportsTable extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->integer('folder_id');
+            $table->string('table_name')->unique();
+            $table->integer('folder_id')->nullable();
             $table->integer('owner_id');
             $table->timestamps();
             $table->foreign('folder_id')->references('id')->on('folders');

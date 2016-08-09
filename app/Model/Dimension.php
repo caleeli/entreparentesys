@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dimension extends Model
 {
+    protected $fillable = [
+        'name',
+    ];
 
     public function associatedValues()
     {
