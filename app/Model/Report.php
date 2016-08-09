@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Auth;
 
 /**
  * Class Report
@@ -28,6 +29,24 @@ class Report extends Model
         'owner_id'  => 'required',
     ];
     protected $guarded = [];
+
+    /**
+     * Boot
+     */
+    public function boot()
+    {
+        static::creating(function(Report $model) {
+            $model->owner_id = Auth::user() ? Auth::user()->id : 1;
+        });
+        static::created(function(Report $model) {
+            $sharedVariable = new SharedReport();
+            $sharedVariable->user_id = Auth::user() ? Auth::user()->id : 1;
+            $sharedVariable->report_id = $model->id;
+            $sharedVariable->seen = true;
+            $sharedVariable->type = 'OWNER';
+            $sharedVariable->save();
+        });
+    }
 
     /**
      * folder relationship
