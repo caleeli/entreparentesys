@@ -29,9 +29,9 @@ class CreateDimensionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('dimensions', function (Blueprint $table) {
-            $table->dropForeign('dimensions_variable_id_foreign');
-        });
+//        Schema::table('dimensions', function (Blueprint $table) {
+//            $table->dropForeign('dimensions_variable_id_foreign');
+//        });
         Schema::drop('dimensions');
     }
 }

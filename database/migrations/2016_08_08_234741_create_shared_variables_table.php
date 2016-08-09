@@ -18,6 +18,8 @@ class CreateSharedVariablesTable extends Migration
             $table->integer('statistical_variable_id')->unsigned()->nullable();
             $table->boolean('seen')->default(false);
             $table->enum('type', ['OWNER', 'SHARED', 'PUBLIC']);
+            $table->integer('folder_id')->unsigned()->nullable();
+            $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
@@ -26,7 +28,10 @@ class CreateSharedVariablesTable extends Migration
                 ->references('id')
                 ->on('statistical_variables')
                 ->onDelete('cascade');
-            $table->timestamps();
+            $table->foreign('folder_id')
+                ->references('id')
+                ->on('folders')
+                ->onDelete('cascade');
         });
     }
 
