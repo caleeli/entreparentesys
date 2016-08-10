@@ -15,7 +15,7 @@ class CreateSynonymsTable extends Migration
         Schema::create('synonyms', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('associated_value_id');
-            $table->foreign('associated_value_id')->references('id')->on('associated_values');
+            //$table->foreign('associated_value_id')->references('id')->on('associated_values');
             $table->string('synonym')->unique();
             $table->timestamps();
         });

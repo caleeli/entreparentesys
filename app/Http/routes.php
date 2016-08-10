@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Route::auth();
 
-Route::group(['middleware' => ['auth','web']], function () {
+//Route::group(['middleware' => ['auth','web']], function () {
 //    Route::get('/home', 'HomeController@index');
     Route::get('/home', ['uses' => 'PivotController@index', 'as' => 'pivotTable']);
 
@@ -31,6 +31,12 @@ Route::group(['middleware' => ['auth','web']], function () {
     Route::get('importCsv', ['uses' => 'PivotController@importCsv', 'as' => 'importCsv']);
     //Route::post('importCsv', ['uses' => 'PivotController@postImportCsv', 'as' => 'importCsv']);
 
+    /**
+     * Folders
+     */
+    Route::get('foldersTree', ['uses' => 'FoldersController@getFolders', 'as' => 'foldersTree']);
+    //Route::post('foldersTree', ['uses' => 'FoldersController@postPivotTable', 'as' => 'foldersTree']);
+
     //example data
     Route::get('/data/comercializacion', 'DataController@comercializacion');
 
@@ -43,4 +49,5 @@ Route::group(['middleware' => ['auth','web']], function () {
         Route::resource('folders', 'FoldersController');
         Route::resource('fileCsv', 'FileCsv', ['only' => ['store', 'show']]);
     });
-});
+
+//});

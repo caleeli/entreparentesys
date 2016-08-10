@@ -19,8 +19,8 @@ class CreateFoldersTable extends Migration
             $table->integer('parent_id')->nullable();
             $table->integer('owner_id')->nullable();
             $table->timestamps();
-            $table->foreign('parent_id')->references('id')->on('folders')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('owner_id')->references('id')->on('users')->onUpdate('set null')->onDelete('set null');
+            //$table->foreign('parent_id')->references('id')->on('folders')->onUpdate('cascade')->onDelete('cascade');
+            //$table->foreign('owner_id')->references('id')->on('users')->onUpdate('set null')->onDelete('set null');
         });
     }
 

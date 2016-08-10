@@ -41,4 +41,12 @@ class FoldersController extends Controller
         $model = ModelBase::find($reports);
         $model->delete();
     }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getFolders()
+    {
+        return view('folders.folder');
+    }
 }
