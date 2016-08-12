@@ -14,6 +14,7 @@ use App\Model\Report;
 use Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Auth;
+use DB;
 
 /**
  * Description of ImportExcel
@@ -36,8 +37,14 @@ class ImportExcel extends ExcelFile
      * @var Dimension[]
      */
     public $dimensions = [];
-    public $originalName;
 
+    /**
+     *
+     * @var AssociatedValue[]
+     */
+    public $associatedValues = [];
+    public $originalName;
+    public $filename;
     /**
      *
      * @return type
@@ -47,8 +54,8 @@ class ImportExcel extends ExcelFile
     {
         /* @var $request Request */
         $request = \App::make('request');
+        $destinationPath = storage_path().'/excels';
         if ($request->hasFile('file') && $request->file('file')->isValid()) {
-            $destinationPath = storage_path().'/excels';
             $extension = $request->file('file')->getClientOriginalExtension();
             switch ($extension) {
                 case 'xls':
@@ -57,11 +64,15 @@ class ImportExcel extends ExcelFile
                     $this->originalName = $request->file('file')->getClientOriginalName();
                     $filename = uniqid('file').'.'.$extension;
                     $request->file('file')->move($destinationPath, $filename);
+                    $this->filename = $filename;
                     return $destinationPath.'/'.$filename;
                 default:
                     throw new Exception(trans('labels.not_excel_file'));
             }
+        } elseif($request->has('filename') && file_exists("$destinationPath/".$request->get('filename')) ) {
+            return $destinationPath.'/'.$request->get('filename');
         }
+        dd($request->has('filename'), "$destinationPath/".$request->get('filename'));
         throw new Exception(trans('labels.failed_upload'));
     }
 
@@ -150,30 +161,79 @@ class ImportExcel extends ExcelFile
         }
     }
 
+    public function loadAssociatedValues()
+    {
+        $res = $this->get();
+        $res->first(function($sheetNumber, RowCollection $sheet) {
+            $sheet->each(function(CellCollection $row) {
+                $i = 0;
+                $variableName = null;
+                $row->each(function($value, $key) use (&$i, &$variableName) {
+                    switch ($i) {
+                        case 0:
+                            $variableName = $value;
+                            break;
+                        case 1:
+                            break;
+                        default:
+                            $dimensionName = $key;
+                            if (!empty($dimensionName) && !isset($this->associatedValues[$dimensionName][$value])) {
+                                @$this->associatedValues[$dimensionName][$value]
+                                    = AssociatedValue::firstOrNew(
+                                        [
+                                            'dimension_id' => $this->dimensions[$dimensionName]->id,
+                                            'value'        => $value,
+                                        ]
+                                );
+                            }
+                    }
+                    $i++;
+                });
+                return true;
+            });
+        });
+    }
+
+    public function saveAssociatedValues()
+    {
+        foreach ($this->associatedValues as $associatedValues1) {
+            foreach ($associatedValues1 as $associatedValue) {
+                if (!$associatedValue->exists) {
+                    $associatedValue->save();
+                }
+            }
+        }
+    }
+
     public function loadData()
     {
         $res = $this->get();
-        $res->each(function(RowCollection $sheet) {
-            $sheet->first(function($rowNumber, CellCollection $row) {
+        $res->first(function($sheetNumber, RowCollection $sheet) {
+            $sheet->each(function(CellCollection $row, $rowNumber) {
                 $i = 0;
                 $variableName = null;
                 $reportRow = [];
-                $row->each(function($value, $key) use (&$i, &$variableName, &$reportRow) {
+                $row->each(function($value, $key) use (&$i, &$variableName, &$reportRow, $rowNumber) {
                     switch ($i) {
                         case 0:
                             $variableName = $value;
                             $reportRow[ImportExcel::VARIABLE_COLUMN_NAME] = $value;
                             break;
                         case 1:
-                            $reportRow[ImportExcel::VAlUE_COLUMN_NAME] = $value;
+                            if(!is_numeric($value)) {
+                                throw new Exception("$key ($value) no tiene un valor numerico en la fila ".($rowNumber+2));
+                            }
+                            $reportRow[ImportExcel::VAlUE_COLUMN_NAME] = (double) $value;
                             break;
                         default:
                             $dimensionName = $key;
-                            $reportRow[$dimensionName] = $value;
+                            if (!empty($dimensionName)) {
+                                $reportRow[$dimensionName] = $value;
+                            }
                     }
                     $i++;
                 });
-                DB::table($this->report->table_name)->insert($row);
+                DB::table($this->report->table_name)->insert($reportRow);
                 return true;
             });
         });

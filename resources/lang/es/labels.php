@@ -24,4 +24,6 @@ return [
     'learn_more' => 'Conoce más',
     'failed_upload' => 'No se pudo cargar el archivo',
     'not_excel_file' => 'No es un archivo Excel',
+    'import' => 'Importar',
+    'finish_import' => 'Finalizar Carga',
 ];

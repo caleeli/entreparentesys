@@ -37,13 +37,21 @@ class ImportExcelController extends Controller
     public function store(ImportExcel $import)
     {
         //try {
-        /* @var $res \Maatwebsite\Excel\Collections\SheetCollection */
-        $import->readHeaders();
-        $import->saveVariablesDimensions();
-        $import->createReport(explode('.', $import->originalName)[0]);
-        return response()->json('sucess', 200);
+            /* @var $res \Maatwebsite\Excel\Collections\SheetCollection */
+            set_time_limit(0);
+            $import->readHeaders();
+            $import->loadAssociatedValues();
+            return response()->json(
+                    [
+                        'reportName' => explode('.', $import->originalName)[0],
+                        'filename'   => $import->filename,
+                        'variables'  => array_values($import->variables),
+                        'dimensions' => array_values($import->dimensions),
+                        'associatedValues' => $import->associatedValues,
+                    ], 200
+            );
         //} catch (\Exception $err) {
-        //    return response()->json($err->getTraceAsString(), 400);
+        //    return response()->json($err->getMessage(), 400);
         //}
     }
 
@@ -76,9 +84,14 @@ class ImportExcelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ImportExcel $import, Request $request, $id)
     {
-        //
+        $import->readHeaders();
+        $import->loadAssociatedValues();
+        $import->saveVariablesDimensions();
+        $import->createReport(explode('.', $request->get('report_name')));
+        $import->saveAssociatedValues();
+        $import->loadData();
     }
 
     /**
