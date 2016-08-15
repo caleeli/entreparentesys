@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Route::auth();
 
-//Route::group(['middleware' => ['auth','web']], function () {
+Route::group(['middleware' => ['auth','web']], function () {
 //    Route::get('/home', 'HomeController@index');
     Route::get('/home', ['uses' => 'PivotController@index', 'as' => 'pivotTable']);
 
@@ -47,7 +47,10 @@ Route::auth();
     Route::group(['prefix' => 'api/v1'], FUNCTION(){
         Route::resource('reports', 'ReportsController');
         Route::resource('folders', 'FoldersController');
+        Route::get('sharedVariable/email', 'SharedVariableController@showEmail');
+        Route::resource('sharedVariable', 'SharedVariableController');
+        Route::resource('variable', 'VariablesController');
         Route::resource('fileCsv', 'FileCsv', ['only' => ['store', 'show']]);
     });
 
-//});
+});

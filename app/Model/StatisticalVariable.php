@@ -10,6 +10,8 @@ class StatisticalVariable extends Model
 
     protected $fillable = [
         'name',
+        'type',
+        'description'
     ];
 
     public static function boot()

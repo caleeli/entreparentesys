@@ -11,7 +11,7 @@
     <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('js/zTree/jquery.ztree.all.min.js') }}"></script>
 
-    <script src="{{ asset('js/zTree/folderExample.js') }}"></script>
+    <script src="{{ asset('js/zTree/folderTree.js') }}"></script>
     <!-- /zTree JS-->
 @endpush
 
@@ -24,22 +24,39 @@
             vertical-align: top;
             *vertical-align: middle
         }
+        .ztree li span.button.shared {
+            margin-left: 2px;
+            margin-right: -1px;
+            background-position: -110px -80px;
+            vertical-align: top;
+            *vertical-align: middle
+        }
+        .ztree li span.button.variable {
+            margin-left: 2px;
+            margin-right: -1px;
+            background-position: -110px -32px;
+            vertical-align: top;
+            *vertical-align: middle
+        }
     </style>
 
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">{{ trans('pivot.title_panel_folders') }}</div>
+                    <div class="panel-heading">{{ trans('folder.title_panel_folder') }}</div>
 
                     <div class="panel-body" style="overflow: auto;">
                         <div class="zTreeDemoBackground left">
-                            <ul id="treeDemo" class="ztree"></ul>
+                            <ul id="foldersTree" class="ztree"></ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    @include('variables.modal_variable')
+    @include('folders.modal_folder')
+    @include('variables.shared_variable')
 @endsection
 
