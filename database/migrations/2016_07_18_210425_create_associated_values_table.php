@@ -15,7 +15,7 @@ class CreateAssociatedValuesTable extends Migration
         Schema::create('associated_values', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('dimension_id');
-            $table->foreign('dimension_id')->references('id')->on('dimensions');
+            //$table->foreign('dimension_id')->references('id')->on('dimensions');
             $table->string('value');
             $table->timestamps();
         });
