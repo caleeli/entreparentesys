@@ -135,41 +135,29 @@ class ImportExcel extends ExcelFile
         /* @var $res \Maatwebsite\Excel\Collections\SheetCollection */
         /* @var $report Report */
         $res = $this->get();
-        error_log(__LINE__);
         $report = Report::firstOrNew([
                 'name'     => $reportName,
                 'owner_id' => Auth::user()->id,
         ]);
-        error_log(__LINE__);
         $this->report = $report;
-        error_log(__LINE__);
         if (!$report->exists) {
-        error_log(__LINE__);
             $report->table_name = preg_replace('/[^a-z0-9]/i', '_',
                                                uniqid($reportName));
         }
-        error_log(__LINE__);
         if (!$report->exists || $replace) {
-        error_log(__LINE__);
             if (!$report->exists) {
-        error_log(__LINE__);
                 $report->save();
             }
-        error_log(__LINE__);
             Schema::dropIfExists($report->table_name);
-        error_log(__LINE__);
             Schema::create($report->table_name,
                            function (Blueprint $table) {
-        error_log(__LINE__);
                 $table->string(ImportExcel::VARIABLE_COLUMN_NAME);
                 $table->double(ImportExcel::VAlUE_COLUMN_NAME);
                 foreach ($this->dimensions as $dimension) {
                     $table->string($dimension->name);
                 }
                 $table->timestamps();
-        error_log(__LINE__);
             });
-        error_log(__LINE__);
         }
     }
 
