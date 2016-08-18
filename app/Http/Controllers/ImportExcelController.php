@@ -90,17 +90,12 @@ class ImportExcelController extends Controller
     {
         ini_set('memory_limit', -1);
         set_time_limit(-1);
-        error_log('readHeaders');
+        $reportName = $request->get('report_name');
         $import->readHeaders();
-        error_log('loadAssociatedValues');
+        $import->saveVariablesDimensions($reportName);
         $import->loadAssociatedValues();
-        error_log('saveVariablesDimensions');
-        $import->saveVariablesDimensions();
-        error_log('createReport');
-        $import->createReport($request->get('report_name'));
-        error_log('saveAssociatedValues');
+        $import->createReport($reportName);
         $import->saveAssociatedValues();
-        error_log('loadData');
         $import->loadData();
     }
 

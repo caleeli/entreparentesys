@@ -81,5 +81,7 @@ class StatisticalVariable extends Model
         $this->attributes['name'] = $name;
     }
 
-
+    public function shares(){
+        return $this->hasMany(\App\Model\SharedVariable::class);
+    }
 }

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property string $name
  * @property integer $parent_id
+ * @property integer folder_id
  * @property-read belongsTo statisticalVariable
  */
 class SharedVariable extends Model

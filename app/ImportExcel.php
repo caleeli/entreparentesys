@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Collections\RowCollection;
 use Maatwebsite\Excel\Collections\CellCollection;
 use App\Model\StatisticalVariable;
+use App\Model\SharedVariable;
 use App\Model\AssociatedValue;
 use App\Model\Dimension;
 use App\Model\Report;
+use App\Model\Folder;
 use Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Auth;
@@ -116,11 +118,26 @@ class ImportExcel extends ExcelFile
         });
     }
 
-    public function saveVariablesDimensions()
+    public function saveVariablesDimensions($reportName)
     {
+        /* @var $folder Folder */
+        /* @var $variable StatisticalVariable */
+        /* @var $share SharedVariable */
+        $folder = Folder::firstOrNew([
+            'name' => $reportName,
+        ]);
+        if(!$folder->exists) {
+            $folder->parent_id = 0;
+            $folder->owner_id = Auth::user() ? Auth::user()->id : 1;Auth::user() ? Auth::user()->id : 1;
+            $folder->save();
+        }
         foreach ($this->variables as $variable) {
             if (!$variable->exists) {
                 $variable->save();
+            }
+            foreach($variable->shares()->where('type', 'OWNER')->get() as $share) {
+                $share->folder_id = $folder->id;
+                $share->save();
             }
         }
         foreach ($this->dimensions as $dimension) {
