@@ -17,7 +17,7 @@ class CreateReportsTable extends Migration
             $table->string('name');
             $table->string('table_name')->unique();
             $table->integer('folder_id')->nullable();
-            $table->integer('owner_id');
+            $table->integer('owner_id')->nullable();
             $table->timestamps();
             //$table->foreign('folder_id')->references('id')->on('folders');
             //$table->foreign('owner_id')->references('id')->on('users');

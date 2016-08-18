@@ -26,7 +26,7 @@ class Report extends Model
     protected $rules = [
         'name'      => 'required',
         'folder_id' => 'required',
-        'owner_id'  => 'required',
+        //'owner_id'  => 'required',
     ];
     protected $guarded = [];
 

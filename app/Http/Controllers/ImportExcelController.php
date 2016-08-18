@@ -36,6 +36,8 @@ class ImportExcelController extends Controller
      */
     public function store(ImportExcel $import)
     {
+        ini_set('memory_limit', -1);
+        set_time_limit(-1);
         //try {
             /* @var $res \Maatwebsite\Excel\Collections\SheetCollection */
             set_time_limit(0);
@@ -86,11 +88,19 @@ class ImportExcelController extends Controller
      */
     public function update(ImportExcel $import, Request $request, $id)
     {
+        ini_set('memory_limit', -1);
+        set_time_limit(-1);
+        error_log('readHeaders');
         $import->readHeaders();
+        error_log('loadAssociatedValues');
         $import->loadAssociatedValues();
+        error_log('saveVariablesDimensions');
         $import->saveVariablesDimensions();
-        $import->createReport(explode('.', $request->get('report_name')));
+        error_log('createReport');
+        $import->createReport($request->get('report_name'));
+        error_log('saveAssociatedValues');
         $import->saveAssociatedValues();
+        error_log('loadData');
         $import->loadData();
     }
 
