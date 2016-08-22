@@ -173,7 +173,7 @@ class ImportExcel extends ExcelFile
                 foreach ($this->dimensions as $dimension) {
                     $table->string($dimension->name);
                 }
-                $table->timestamps();
+                //$table->timestamps();
             });
         }
     }

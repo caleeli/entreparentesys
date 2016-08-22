@@ -22,15 +22,10 @@
         }
     </style>
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">{{ trans('folder.title_panel_folder') }}</div>
-
-                    <div class="panel-body" style="overflow: auto;">
                         <div class="zTreeDemoBackground left">
                             <ul id="foldersTree" class="ztree"></ul>
                         </div>
-                    </div>
-                </div>
+
     @include('variables.modal_variable')
     @include('folders.modal_folder')
     @include('variables.shared_variable')
