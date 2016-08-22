@@ -8,4 +8,6 @@ Homestead.json
 /.idea/
 /nbproject/
 .DS_Store
+/storage/excels/
+
 
