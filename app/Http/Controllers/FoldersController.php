@@ -114,7 +114,7 @@ class FoldersController extends Controller
     {
         $data['name'] = $request->input('name');
 
-        $data['parent_id'] = in_array($request->input('parent_id'), [80000000001, 90000000001, 100000000001]) ? 0 : $request->input('parent_id');
+        $data['parent_id'] = $request->input('parent_id') == 0 ? null : $request->input('parent_id');
         $data['owner_id'] = $request->user()->id;
         return Folder::create($data);
     }
