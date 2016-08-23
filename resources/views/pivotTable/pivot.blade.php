@@ -26,6 +26,7 @@
 <script src="{{ asset('js/zTree/jquery.ztree.all.min.js') }}"></script>
 
 <script src="{{ asset('js/zTree/folderTree.js') }}"></script>
+<script src="{{ asset('js/zTree/treeReports.js') }}"></script>
 <!-- /zTree JS-->
 <script>
 function pivotChangeTab(a) {
@@ -54,6 +55,7 @@ function pivotChangeTab(a) {
                             </ul>
                             <div class="tab-content" id="tab-reportes" style="display:none">
                                 <!------------------------------------------------------------------------->
+                                @include('reports.folder_partial')
                                 <!------------------------------------------------------------------------->
                             </div>
                             <div class="tab-content" id="tab-variables">

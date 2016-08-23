@@ -46,6 +46,7 @@ Route::group(['middleware' => ['auth','web']], function () {
     //apis
     Route::group(['prefix' => 'api/v1'], FUNCTION(){
         Route::resource('reports', 'ReportsController');
+        Route::get('tree-reports', 'ReportsController@treeReports');
         Route::resource('folders', 'FoldersController');
         Route::get('sharedVariable/email', 'SharedVariableController@showEmail');
         Route::resource('sharedVariable', 'SharedVariableController');
