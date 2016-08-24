@@ -96,6 +96,7 @@ class ReportsController extends Controller
                 $tmpReport['id'] = $folder['id'].$report['id'];
                 $tmpReport['name'] = $report['name'];
                 $tmpReport['pId'] = 'my-' .$folder['id'];
+                $tmpReport['click'] = "treeReport.pivot();";
                 $response[]=$tmpReport;
             }
         }

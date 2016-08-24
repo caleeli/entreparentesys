@@ -387,6 +387,37 @@ treeReport.saveSharedReport = function (tree, treeNode, email) {
         }
     });
 };
+treeReport.pivot = function () {
+    var derivers = $.pivotUtilities.derivers;
+    var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.gchart_renderers);
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': CSRF_TOKEN
+        },
+        url: "/data/comercializacion",
+        dataType: "json",
+        type: "GET",
+        success: function (mps) {
+            var attributes = [];
+            if (typeof mps[0] == 'object') {
+                for (var a in mps[0]) {
+                    attributes.push(a);
+                }
+            }
+            $("#output").pivotUI(
+                mps,
+                {
+                    renderers: renderers,
+                    cols: attributes.splice(2),
+                    rows: ["variable_estadistica"],
+                    rendererName: "Area Chart"
+                },
+                false,
+                'es'
+            );
+        }
+    });
+};
 //auto complete
 // $( "#shared_name" ).autocomplete({
 //     source: function( request, response ) {
