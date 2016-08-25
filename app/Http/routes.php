@@ -17,9 +17,10 @@ Route::get('/', function () {
 
 Route::auth();
 
-Route::group(['middleware' => ['auth','web']], function () {
+Route::group(['middleware' => ['auth']], function () {
 //    Route::get('/home', 'HomeController@index');
     Route::get('/home', ['uses' => 'PivotController@index', 'as' => 'pivotTable']);
+    Route::get('/setting', ['uses' => 'SettingController@index', 'as' => 'setting']);
 
     /**
      * example pivot table
@@ -45,6 +46,9 @@ Route::group(['middleware' => ['auth','web']], function () {
 
     //apis
     Route::group(['prefix' => 'api/v1'], FUNCTION(){
+        Route::resource('user', 'UserController');
+        Route::resource('roles', 'RolesController');
+        Route::resource('permissions', 'PermissionsController');
         Route::resource('reports', 'ReportsController');
         Route::get('tree-reports', 'ReportsController@treeReports');
         Route::resource('folders', 'FoldersController');

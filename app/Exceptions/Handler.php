@@ -48,6 +48,10 @@ class Handler extends ExceptionHandler
         if($e instanceof \Illuminate\Database\QueryException) {
             return response()->json(['error'=>$e->getMessage()]);
         }
+        if ($e instanceof \Bican\Roles\Exceptions\RoleDeniedException) {
+            // you can for example flash message, redirect...
+            return redirect()->back();
+        }
         return parent::render($request, $e);
     }
 }
