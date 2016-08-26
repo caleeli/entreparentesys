@@ -25,6 +25,19 @@
                         <div class="zTreeDemoBackground left">
                             <ul id="foldersTree" class="ztree"></ul>
                         </div>
+                        <div class="zTreeDemoBackground left" id="variablesPivotRender" style="display: none; margin-left: 10px;">
+                            <label for="selectRender">Graficos</label>
+                            <div id="selectRender">
+                            </div>
+                            <label for="selectAgregator">Agregado</label>
+                            <div id="selectAgregator">
+
+                            </div>
+                            <label for="variablesTree">Variables</label>
+                            <ul id="variablesTree" class="ztree"></ul>
+                            <br>
+                            <button type="button" class="btn btn-default" style="margin-left: 40px;"  onclick="return generateVariables()">Generar Grafico</button>
+                        </div>
 
     @include('variables.modal_variable')
     @include('folders.modal_folder')

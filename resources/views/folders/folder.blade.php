@@ -12,6 +12,7 @@
     <script src="{{ asset('js/zTree/jquery.ztree.all.min.js') }}"></script>
 
     <script src="{{ asset('js/zTree/folderTree.js') }}"></script>
+    <script src="{{ asset('js/zTree/variablesTree.js') }}"></script>
     <!-- /zTree JS-->
 @endpush
 

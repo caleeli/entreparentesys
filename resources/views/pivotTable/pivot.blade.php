@@ -16,6 +16,7 @@
 
 <script src="{{ asset('js/pivotTable/pivot.js') }}"></script>
 <script src="{{ asset('js/pivotTable/pivot.es.js') }}"></script>
+
 <script src="{{ asset('js/pivotTable/gchart_renderers.js') }}"></script>
 
 <script src="{{ asset('js/pivotTable/pivotExample.js') }}"></script>
@@ -24,8 +25,12 @@
 <!-- zTree JS-->
 <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('js/zTree/jquery.ztree.all.min.js') }}"></script>
+<script src="{{ asset('js/zTree/jquery.ztree.excheck.min.js') }}"></script>
+<script src="{{ asset('js/zTree/jquery.ztree.exedit.min.js') }}"></script>
 
+<script src="{{ asset('js/zTree/variablesTree.js') }}"></script>
 <script src="{{ asset('js/zTree/folderTree.js') }}"></script>
+
 <script src="{{ asset('js/zTree/treeReports.js') }}"></script>
 <!-- /zTree JS-->
 <script>
