@@ -404,17 +404,29 @@ treeReport.pivot = function () {
                     attributes.push(a);
                 }
             }
-            $("#output").pivotUI(
-                mps,
-                {
-                    renderers: renderers,
-                    cols: attributes.splice(2),
+             var sum = $.pivotUtilities.aggregatorTemplates.sum;
+             var numberFormat = $.pivotUtilities.numberFormat;
+             var intFormat = numberFormat({digitsAfterDecimal: 0});
+            $("#outputGrafico").pivot(mps, {
+                rows: ["variable_estadistica"],
+                cols: ["d1_mes"],
+                aggregator: sum(intFormat)(["cantidad"]),
+                renderer: $.pivotUtilities.renderers["Area Chart"],
+                rendererOptions: { output: { size: {width: 600, height: 600} } }
+            });
+
+            var utils = $.pivotUtilities;
+            var heatmap =  utils.renderers["Heatmap"];
+            var sumOverSum =  utils.aggregators["Sum over Sum"];
+
+            $("#outputTabla").pivot(
+                mps, {
                     rows: ["variable_estadistica"],
-                    rendererName: "Area Chart"
-                },
-                false,
-                'es'
-            );
+                    cols: attributes.splice(2),
+                    aggregator: sum(intFormat)(["cantidad"]),
+                    renderer: heatmap,
+                    rendererOptions: { c3: { size: {width: 100, height: 100} } }
+                });
         }
     });
 };

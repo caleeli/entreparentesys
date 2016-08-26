@@ -6,6 +6,7 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
+        "bican/roles": "2.1.*",
         "laravel/framework": "5.2.*",
         "league/csv": "^8.1",
         "maatwebsite/excel": "^2.1",

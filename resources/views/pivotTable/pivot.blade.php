@@ -71,11 +71,12 @@ function pivotChangeTab(a) {
                             </ul>
                             <div class="tab-content" id="tab-grafico" style="overflow:auto;">
                                 <!------------------------------------------------------------------------->
-                                <div id="output" style="margin: 30px;"></div>
+                                <div id="outputGrafico" style="margin: 10px;"></div>
                                 <!------------------------------------------------------------------------->
                             </div>
                             <div class="tab-content" id="tab-tabla" style="display:none">
                                 <!------------------------------------------------------------------------->
+                                <div id="outputTabla" style="margin: 10px;"></div>
                                 <!------------------------------------------------------------------------->
                             </div>
                         </div>

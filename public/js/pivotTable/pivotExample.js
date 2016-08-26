@@ -11,7 +11,7 @@ $(function () {
                 attributes.push(a);
             }
         }
-        $("#output").pivotUI(
+        $("#outputGrafico").pivotUI(
             mps,
             {
                 renderers: renderers,
