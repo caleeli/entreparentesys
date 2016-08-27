@@ -399,6 +399,7 @@ var loadFolderTree = function () {
             });
 
             $.fn.zTree.init($("#foldersTree"), setting, zNodes);
+            $('#variablesPivotRender').attr('style', 'margin-left: 10px;')
             $("#selectAll").bind("click", selectAll);
         }
     });
