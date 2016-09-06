@@ -46,7 +46,11 @@ Route::group(['middleware' => ['auth']], function () {
 
     //apis
     Route::group(['prefix' => 'api/v1'], FUNCTION(){
+        Route::get('user/{user}/role-permission', 'UserController@rolesPermissions');
+        Route::post('user/{user}/role-permission', 'UserController@saveRolesPermissions');
         Route::resource('user', 'UserController');
+        Route::get('roles/{role}/permission', 'RolesController@permissions');
+        Route::post('roles/{role}/permission', 'RolesController@savePermissions');
         Route::resource('roles', 'RolesController');
         Route::resource('permissions', 'PermissionsController');
         Route::resource('reports', 'ReportsController');

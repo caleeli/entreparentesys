@@ -72,6 +72,60 @@
                 });
             });
         });
+        $('#updateUser').click(function () {
+            var userId = $("#mdlEditUser #userId").val();
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': CSRF_TOKEN},
+                url: "/api/v1/user/"+userId+"/role-permission",
+                dataType: "json",
+                type: "POST",
+                data: {
+                    name: $('#mdlEditUser #nameUser').val(),
+                    email: $('#mdlEditUser #emailUser').val(),
+                    roles: $('#mdlEditUser .rolesUser:checked').serializeArray(),
+                    permissions: $('#mdlEditUser .permissionUser:checked').serializeArray()
+                },
+                success: function () {
+                    $('#mdlEditUser').modal('hide');
+                }
+            });
+        });
+        $('#updateRole').click(function () {
+            var roleId = $("#mdlEditRole #roleId").val();
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': CSRF_TOKEN},
+                url: "/api/v1/roles/"+roleId+"/permission",
+                dataType: "json",
+                type: "POST",
+                data: {
+                    name: $('#mdlEditRole #nameRole').val(),
+                    slug: $('#mdlEditRole #slugRole').val(),
+                    description: $('#mdlEditRole #descriptionRole').val(),
+                    level: $('#mdlEditRole #levelRole').val(),
+                    permissions: $('#mdlEditRole .permissionUser:checked').serializeArray()
+                },
+                success: function () {
+                    $('#mdlEditRole').modal('hide');
+                }
+            });
+        });
+        $('#updatePermission').click(function () {
+            var permissionId = $("#mdlEditPermission #permissionId").val();
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': CSRF_TOKEN},
+                url: "/api/v1/permissions/"+permissionId,
+                dataType: "json",
+                type: "PUT",
+                data: {
+                    name: $('#mdlEditPermission #namePermission').val(),
+                    slug: $('#mdlEditPermission #slugPermission').val(),
+                    description: $('#mdlEditPermission #descriptionPermission').val(),
+                },
+                success: function () {
+                    $('#mdlEditPermission').modal('hide');
+                }
+            });
+        });
     });
 
     var changeTab = function(a) {
@@ -117,9 +171,8 @@
                     title: "Opciones",
                     render: function ( data, type, row ) {
                         return '<div class="btn-group btn-group-xs" role="group" aria-label="...">'+
-                                '<button type="button" class="btn btn-default">Left</button>'+
-                                '<button type="button" class="btn btn-default">Middle</button>'+
-                                '<button type="button" class="btn btn-default deleteUser" onclick="deleteUser(' + data.id + ');">Borrar</button>'+
+                                '<button type="button" class="btn btn-info btnEditUser" data-id="' + data.id + '">Editar</button>'+
+                                '<button type="button" class="btn btn-danger deleteUser" onclick="deleteUser(' + data.id + ');">Borrar</button>'+
                                 '</div>';
                     }
                 }
@@ -130,6 +183,70 @@
             tableUsers.row($(this).parents('tr'))
                     .remove()
                     .draw(false);
+        });
+        $('#tableUsers tbody').off("click", "button.btnEditUser");
+        $('#tableUsers tbody').on("click", "button.btnEditUser", function () {
+            var userId = $(this).data('id');
+            var promise = $.ajax({
+                headers: {'X-CSRF-TOKEN': CSRF_TOKEN},
+                url : "/api/v1/roles",
+                type : "GET",
+                success: function(data2){
+                    $("#mdlEditUser #rolesUser").html('');
+                    $.each(data2.data, function (index, role) {
+                        $("#mdlEditUser #rolesUser").append('<div class="checkbox">'+
+                                '<label>'+
+                                '<input type="checkbox" class="rolesUser" name="rolesUser[]" name="rolesUser" value="'+role.id+'">'+role.name+'</label>'+
+                                '</div>'
+                        );
+                    });
+                },
+                error : function(xhr,errmsg,err) {
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+            });
+            promise.then(function () {
+                $.ajax({
+                    headers: {'X-CSRF-TOKEN': CSRF_TOKEN},
+                    url : "/api/v1/permissions",
+                    type : "GET",
+                    success: function(data2){
+                        $("#mdlEditUser #permissionUser").html('');
+                        $.each(data2.data, function (index, permission) {
+                            $("#mdlEditUser #permissionUser").append('<div class="checkbox">'+
+                                    '<label>'+
+                                    '<input type="checkbox" class="permissionUser" name="permissionUser[]" value="'+permission.id+'">'+permission.name+'</label>'+
+                                    '</div>'
+                            );
+                            //return (value !== 'three');
+                        });
+                    },
+                    error : function(xhr,errmsg,err) {
+                        console.log(xhr.status + ": " + xhr.responseText);
+                    }
+                });
+            });
+            promise.then(function(){
+                $.ajax({
+                    headers: {'X-CSRF-TOKEN': CSRF_TOKEN},
+                    url: "/api/v1/user/"+userId+"/role-permission",
+                    dataType: "json",
+                    type: "GET",
+                    success: function (data) {
+                        console.log(data);
+                        $("#mdlEditUser #userId").val(userId);
+                        $("#mdlEditUser .modal-body #nameUser").val(data.user.name);
+                        $("#mdlEditUser .modal-body #emailUser").val(data.user.email);
+                        $.each(data.role, function (index, role) {
+                            $("#mdlEditUser #rolesUser input[type='checkbox'][value='"+role.id+"']").attr('checked', true);
+                        });
+                        $.each(data.permission, function (index, permission) {
+                            $("#mdlEditUser #permissionUser input[type='checkbox'][value='"+permission.id+"']").attr('checked', true);
+                        });
+                    }
+                });
+            });
+            $('#mdlEditUser').modal('show');
         });
     };
     var deleteUser = function (id) {
@@ -165,8 +282,8 @@
                     title: "Opciones",
                     render: function (data, type, row) {
                         return '<div class="btn-group btn-group-xs" role="group" aria-label="...">' +
-                                '<button type="button" class="btn btn-default" >Permisos</button>' +
-                                '<button type="button" class="btn btn-default deleteRole" onclick="deleteRole(' + data.id + ');">Borrar</button>' +
+                                '<button type="button" class="btn btn-info btnEditRole" data-id="' + data.id + '">Editar</button>' +
+                                '<button type="button" class="btn btn-danger deleteRole" onclick="deleteRole(' + data.id + ');">Borrar</button>' +
                                 '</div>';
                     }
                 }
@@ -178,6 +295,48 @@
                     .remove()
                     .draw(false);
         });
+        $('#tableRoles tbody').off("click", "button.btnEditRole");
+        $('#tableRoles tbody').on("click", "button.btnEditRole", function () {
+            var roleId = $(this).data('id');
+            var promise = $.ajax({
+                headers: {'X-CSRF-TOKEN': CSRF_TOKEN},
+                url : "/api/v1/permissions",
+                type : "GET",
+                success: function(data2){
+                    $("#mdlEditRole #permissionUser").html('');
+                    $.each(data2.data, function (index, permission) {
+                        $("#mdlEditRole #permissionUser").append('<div class="checkbox">'+
+                                '<label>'+
+                                '<input type="checkbox" class="permissionUser" name="permissionUser[]" value="'+permission.id+'">'+permission.name+'</label>'+
+                                '</div>'
+                        );
+                    });
+                },
+                error : function(xhr,errmsg,err) {
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+            });
+            promise.then(function(){
+                $.ajax({
+                    headers: {'X-CSRF-TOKEN': CSRF_TOKEN},
+                    url: "/api/v1/roles/"+roleId+"/permission",
+                    dataType: "json",
+                    type: "GET",
+                    success: function (data) {
+                        console.log(data);
+                        $("#mdlEditRole #roleId").val(roleId);
+                        $("#mdlEditRole .modal-body #nameRole").val(data.role.name);
+                        $("#mdlEditRole .modal-body #slugRole").val(data.role.slug);
+                        $("#mdlEditRole .modal-body #descriptionRole").val(data.role.description);
+                        $("#mdlEditRole .modal-body #levelRole").val(data.role.level);
+                        $.each(data.permission, function (index, permission) {
+                            $("#mdlEditRole #permissionUser input[type='checkbox'][value='"+permission.id+"']").attr('checked', true);
+                        });
+                    }
+                });
+            });
+            $('#mdlEditRole').modal('show');
+        });
     };
     var deleteRole = function (id) {
         $.ajax({
@@ -187,7 +346,6 @@
             }
         });
     };
-
     var loadPermissions = function () {
         tablePermissions = $('#tablePermissions').DataTable({
             ajax: {
@@ -212,8 +370,8 @@
                     title:"Opciones",
                     render: function ( data, type, row ) {
                         return '<div class="btn-group btn-group-xs" role="group" aria-label="...">'+
-                                '<button type="button" class="btn btn-default">Editar</button>'+
-                                '<button type="button" class="btn btn-default deletePermissions" onclick="deletePermission(' + data.id + ');">Borrar</button>'+
+                                '<button type="button" class="btn btn-info btnEditPermission" data-id="' + data.id + '">Editar</button>'+
+                                '<button type="button" class="btn btn-danger deletePermissions" onclick="deletePermission(' + data.id + ');">Borrar</button>'+
                                 '</div>';
                     }
                 }
@@ -224,6 +382,23 @@
             tablePermissions.row($(this).parents('tr'))
                     .remove()
                     .draw(false);
+        });
+        $('#tablePermissions tbody').off("click", "button.btnEditPermission");
+        $('#tablePermissions tbody').on("click", "button.btnEditPermission", function () {
+            var permissionId = $(this).data('id');
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': CSRF_TOKEN},
+                url: "/api/v1/permissions/"+permissionId,
+                dataType: "json",
+                type: "GET",
+                success: function (data) {
+                    $("#mdlEditPermission #permissionId").val(permissionId);
+                    $("#mdlEditPermission .modal-body #namePermission").val(data.name);
+                    $("#mdlEditPermission .modal-body #slugPermission").val(data.slug);
+                    $("#mdlEditPermission .modal-body #descriptionPermission").val(data.description);
+                }
+            });
+            $('#mdlEditPermission').modal('show');
         });
     };
     var deletePermission = function (id) {
@@ -302,3 +477,6 @@
 
 @include('setting.add_role')
 @include('setting.add_permissions')
+@include('setting.edit_user')
+@include('setting.edit_role')
+@include('setting.edit_permission')

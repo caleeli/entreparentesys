@@ -145,9 +145,10 @@ class ImportExcel extends ExcelFile
                 $dimension->save();
             }
         }
+        return $folder->id;
     }
 
-    public function createReport($reportName, $replace = true)
+    public function createReport($reportName, $folder_id, $replace = true)
     {
         /* @var $res \Maatwebsite\Excel\Collections\SheetCollection */
         /* @var $report Report */
@@ -156,6 +157,7 @@ class ImportExcel extends ExcelFile
                 'name'     => $reportName,
                 'owner_id' => Auth::user()->id,
         ]);
+        $report->folder_id = $folder_id;
         $this->report = $report;
         if (!$report->exists) {
             $report->table_name = preg_replace('/[^a-z0-9]/i', '_',
