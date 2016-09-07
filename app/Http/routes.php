@@ -54,8 +54,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('roles/{role}/permission', 'RolesController@savePermissions');
         Route::resource('roles', 'RolesController');
         Route::resource('permissions', 'PermissionsController');
-        Route::resource('reports', 'ReportsController');
         Route::get('tree-reports', 'ReportsController@treeReports');
+        Route::resource('reports', 'ReportsController');
+        Route::resource('sharedReports', 'SharedReportsController');
         Route::resource('folders', 'FoldersController');
         Route::get('sharedVariable/email', 'SharedVariableController@showEmail');
         Route::resource('sharedVariable', 'SharedVariableController');

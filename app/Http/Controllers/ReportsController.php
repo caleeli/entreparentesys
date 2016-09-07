@@ -107,6 +107,7 @@ class ReportsController extends Controller
             $dataReport = ModelBase::where('id', $report['report_id'])->get()->toArray();
             $reportShared = [
                 'id' => $report['report_id'] . '',
+                'shaId' => $report['id'] . '',
                 'name' => $dataReport[0]['name'],
                 'pId' => $nodeSharedFolders['id'],
             ];

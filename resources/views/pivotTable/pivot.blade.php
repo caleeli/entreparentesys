@@ -4,7 +4,7 @@
 <!-- pivot table CSS -->
 <link href="{{ asset('css/pivot.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('css/zTree/zTreeStyle.css') }}" rel="stylesheet" type="text/css">
-<!-- /pivot table CSS-->
+<!-- pivot table CSS-->
 @endpush
 
 @push('script-head')
@@ -103,3 +103,4 @@ function pivotChangeTab(a) {
 
 @endsection
 
+@include('reports.shared_report')
