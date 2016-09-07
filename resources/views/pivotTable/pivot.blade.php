@@ -55,15 +55,15 @@ function pivotChangeTab(a) {
                     <div class="row">
                         <div class="col-md-3 nopadding">
                             <ul class="nav nav-tabs">
-                                <li><a href="#tab-reportes" onclick="return pivotChangeTab(this)">Reportes</a></li>
-                                <li class="active"><a href="#tab-variables" onclick="return pivotChangeTab(this)">Variables</a></li>
+                                <li class="active"><a href="#tab-reportes" onclick="return pivotChangeTab(this)">Reportes</a></li>
+                                <li><a href="#tab-variables" onclick="return pivotChangeTab(this)">Variables</a></li>
                             </ul>
-                            <div class="tab-content" id="tab-reportes" style="display:none">
+                            <div class="tab-content" id="tab-reportes">
                                 <!------------------------------------------------------------------------->
                                 @include('reports.folder_partial')
                                 <!------------------------------------------------------------------------->
                             </div>
-                            <div class="tab-content" id="tab-variables">
+                            <div class="tab-content" id="tab-variables" style="display:none">
                                 <!------------------------------------------------------------------------->
                                 @include('folders.folder_partial')
                                 <!------------------------------------------------------------------------->

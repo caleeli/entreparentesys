@@ -46,6 +46,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     //apis
     Route::group(['prefix' => 'api/v1'], FUNCTION(){
+        Route::get('pivot/{table}/build', 'PivotController@pivotData');
         Route::get('user/{user}/role-permission', 'UserController@rolesPermissions');
         Route::post('user/{user}/role-permission', 'UserController@saveRolesPermissions');
         Route::resource('user', 'UserController');

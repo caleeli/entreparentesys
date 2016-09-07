@@ -255,7 +255,7 @@ var treeReport = {
                     flag = true;
                 }
                 return flag;
-            },
+            }
         },
         data: {
             simpleData: {
@@ -267,13 +267,13 @@ var treeReport = {
                 return false;
             },
             beforeEditName: function (treeId, treeNode) {
-    className = (className === "dark" ? "" : "dark");
-    showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
-    var zTree = $.fn.zTree.getZTreeObj("treeReports");
-    zTree.selectNode(treeNode);
-    //confirm
-    //return confirm("Start node '" + treeNode.name + "' editorial status?");
-},
+                className = (className === "dark" ? "" : "dark");
+                showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+                var zTree = $.fn.zTree.getZTreeObj("treeReports");
+                zTree.selectNode(treeNode);
+                //confirm
+                //return confirm("Start node '" + treeNode.name + "' editorial status?");
+            },
             beforeRemove: function (treeId, treeNode) {
                 className = (className === "dark" ? "" : "dark");
                 showLog("[ " + getTime() + " beforeRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
@@ -307,6 +307,18 @@ var treeReport = {
                     updateFolder(treeNode, isCancel);
                 } else {
                     updateVariable(treeNode, isCancel);
+                }
+            },
+            onClick: function (event, treeId, treeNode, clickFlag) {
+                //reportes
+                var isNotPub;
+                if(typeof treeNode.pId == 'string' && treeNode.pId.indexOf('-') > -1){
+                    var typepId = treeNode.pId.split('-');
+                    isNotPub = typepId[0] != 'pub' && typepId[0] != 'sha';
+                }
+                if (!treeNode.isParent && isNotPub) {
+                    console.log('ssss');
+                    treeReport.pivot(event, treeId, treeNode, clickFlag);
                 }
             }
         }
@@ -387,14 +399,12 @@ treeReport.saveSharedReport = function (tree, treeNode, email) {
         }
     });
 };
-treeReport.pivot = function () {
+treeReport.pivot = function (event, treeId, treeNode, clickFlag) {
     var derivers = $.pivotUtilities.derivers;
     var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.gchart_renderers);
     $.ajax({
-        headers: {
-            'X-CSRF-TOKEN': CSRF_TOKEN
-        },
-        url: "/data/comercializacion",
+        headers: {'X-CSRF-TOKEN': CSRF_TOKEN},
+        url: "/api/v1/pivot/"+treeNode.name+"/build",
         dataType: "json",
         type: "GET",
         success: function (mps) {
@@ -408,9 +418,9 @@ treeReport.pivot = function () {
              var numberFormat = $.pivotUtilities.numberFormat;
              var intFormat = numberFormat({digitsAfterDecimal: 0});
             $("#outputGrafico").pivot(mps, {
-                rows: ["variable_estadistica"],
-                cols: ["d1_mes"],
-                aggregator: sum(intFormat)(["cantidad"]),
+                rows: [attributes[0]],
+                cols: [attributes[1]],
+                aggregator: sum(intFormat)([attributes[1]]),
                 renderer: $.pivotUtilities.renderers["Area Chart"],
                 rendererOptions: { output: { size: {width: 600, height: 600} } }
             });
@@ -421,36 +431,16 @@ treeReport.pivot = function () {
 
             $("#outputTabla").pivot(
                 mps, {
-                    rows: ["variable_estadistica"],
+                    rows: [attributes[0]],
                     cols: attributes.splice(2),
-                    aggregator: sum(intFormat)(["cantidad"]),
+                    aggregator: sum(intFormat)([attributes[1]]),
                     renderer: heatmap,
                     rendererOptions: { c3: { size: {width: 100, height: 100} } }
                 });
+            generateVariablesTree(attributes, mps, renderers);
         }
     });
 };
-//auto complete
-// $( "#shared_name" ).autocomplete({
-//     source: function( request, response ) {
-//         $.ajax( {
-//             url: "/api/v1/sharedVariable/email",
-//             dataType: "json",
-//             data: {
-//                 q: request.term
-//             },
-//             success: function( data ) {
-//                 $('.ui-helper-hidden-accessible').attr('style', 'display: none')
-//                 // Handle 'no match' indicated by [ "" ] response
-//                 response( data.length === 1 && data[ 0 ].length === 0 ? [] : data );
-//             }
-//         } );
-//     },
-//     minLength: 3,
-//     select: function( event, ui ) {
-//         //
-//     }
-// } );
 $(document).ready(function () {
     treeReport.init();
 });
