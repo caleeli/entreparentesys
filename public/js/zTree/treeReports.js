@@ -373,7 +373,7 @@ treeReport.pivot = function (event, treeId, treeNode, clickFlag) {
                 renderer: $.pivotUtilities.renderers["Area Chart"],
                 rendererOptions: { output: { size: {width: 600, height: 600} } }
             });
-
+            generateVariablesTree(attributes, mps, renderers);
             var utils = $.pivotUtilities;
             var heatmap =  utils.renderers["Heatmap"];
             var sumOverSum =  utils.aggregators["Sum over Sum"];
@@ -386,7 +386,7 @@ treeReport.pivot = function (event, treeId, treeNode, clickFlag) {
                     renderer: heatmap,
                     rendererOptions: { c3: { size: {width: 100, height: 100} } }
                 });
-            generateVariablesTree(attributes, mps, renderers);
+
         }
     });
 };
