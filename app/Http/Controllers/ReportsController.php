@@ -78,26 +78,25 @@ class ReportsController extends Controller
         $arrayFolders = ModelFolder::where('owner_id', '=', $user->id)->orderBy('name', 'asc')->get()->toArray();
         foreach ($arrayFolders as $index => $folder) {
             $tmpFolder = array();
-            $tmpFolder['id'] = 'my-' .$folder['id'];
+            $tmpFolder['id'] = 'my-' . $folder['id'];
             $tmpFolder['name'] = $folder['name'];
             if ($folder['parent_id'] == 0) {
                 $tmpFolder['pId'] = $nodeMyFolders['id'];
             } else {
-                $tmpFolder['pId'] = 'my-' .$folder['parent_id'];
+                $tmpFolder['pId'] = 'my-' . $folder['parent_id'];
             }
             $tmpFolder['isParent'] = true;
-            $response[]=$tmpFolder;
+            $response[] = $tmpFolder;
             $arrayReports = ModelBase::where([
                 ['owner_id', '=', $user->id],
                 ['folder_id', '=', $folder['id']],
             ])->get()->toArray();
             foreach ($arrayReports as $ir => $report) {
                 $tmpReport = array();
-                $tmpReport['id'] = $folder['id'].$report['id'];
+                $tmpReport['id'] = $folder['id'] . '-' . $report['id'];
                 $tmpReport['name'] = $report['name'];
-                $tmpReport['pId'] = 'my-' .$folder['id'];
-                $tmpReport['click'] = "treeReport.pivot();";
-                $response[]=$tmpReport;
+                $tmpReport['pId'] = 'my-' . $folder['id'];
+                $response[] = $tmpReport;
             }
         }
         //Find shared Reports
@@ -107,7 +106,8 @@ class ReportsController extends Controller
         foreach ($shared as $report) {
             $dataReport = ModelBase::where('id', $report['report_id'])->get()->toArray();
             $reportShared = [
-                'id' => $report['report_id'].'',
+                'id' => $report['report_id'] . '',
+                'shaId' => $report['id'] . '',
                 'name' => $dataReport[0]['name'],
                 'pId' => $nodeSharedFolders['id'],
             ];
@@ -120,7 +120,7 @@ class ReportsController extends Controller
         foreach ($public as $report) {
             $dataReport = ModelBase::where('id', $report['report_id'])->get()->toArray();
             $reportPublic = [
-                'id' => $report['report_id'].'',
+                'id' => $report['report_id'] . '',
                 'name' => $dataReport[0]['name'],
                 'pId' => $nodePublicFolders['id'],
             ];

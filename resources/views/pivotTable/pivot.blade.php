@@ -4,7 +4,7 @@
 <!-- pivot table CSS -->
 <link href="{{ asset('css/pivot.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('css/zTree/zTreeStyle.css') }}" rel="stylesheet" type="text/css">
-<!-- /pivot table CSS-->
+<!-- pivot table CSS-->
 @endpush
 
 @push('script-head')
@@ -55,15 +55,15 @@ function pivotChangeTab(a) {
                     <div class="row">
                         <div class="col-md-3 nopadding">
                             <ul class="nav nav-tabs">
-                                <li><a href="#tab-reportes" onclick="return pivotChangeTab(this)">Reportes</a></li>
-                                <li class="active"><a href="#tab-variables" onclick="return pivotChangeTab(this)">Variables</a></li>
+                                <li class="active"><a href="#tab-reportes" onclick="return pivotChangeTab(this)">Reportes</a></li>
+                                <li><a href="#tab-variables" onclick="return pivotChangeTab(this)">Variables</a></li>
                             </ul>
-                            <div class="tab-content" id="tab-reportes" style="display:none">
+                            <div class="tab-content" id="tab-reportes">
                                 <!------------------------------------------------------------------------->
                                 @include('reports.folder_partial')
                                 <!------------------------------------------------------------------------->
                             </div>
-                            <div class="tab-content" id="tab-variables">
+                            <div class="tab-content" id="tab-variables" style="display:none">
                                 <!------------------------------------------------------------------------->
                                 @include('folders.folder_partial')
                                 <!------------------------------------------------------------------------->
@@ -103,3 +103,4 @@ function pivotChangeTab(a) {
 
 @endsection
 
+@include('reports.shared_report')

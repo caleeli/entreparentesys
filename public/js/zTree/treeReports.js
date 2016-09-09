@@ -1,108 +1,6 @@
 var log, className = "dark";
 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
-var removeFolder = function (treeNode) {
-    if (folderUID.indexOf(treeNode.id) != -1) {
-        folderId = 0;
-    } else {
-        folderId = treeNode.id.split('-');
-        folderId = folderId[1];
-    }
-    $.ajax({
-        headers: {
-            'X-CSRF-TOKEN': CSRF_TOKEN
-        },
-        url: "/api/v1/folders/" + folderId,
-        type: "DELETE",
-        success: function (data) {
-            $('#folder_id').val(0);
-            $('#folder_name').val('');
-
-            showLog("[ " + getTime() + " onRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
-        }
-    });
-};
-
-var removeVariable = function (treeNode) {
-    if (folderUID.indexOf(treeNode.id) != -1) {
-        folderId = 0;
-    } else {
-        folderId = treeNode.id.split('-');
-        folderId = folderId[1];
-    }
-    $.ajax({
-        headers: {
-            'X-CSRF-TOKEN': CSRF_TOKEN
-        },
-        url: "/api/v1/variable/" + folderId,
-        //dataType: "json",
-        type: "DELETE",
-        success: function (data) {
-            //change
-            showLog("[ " + getTime() + " onRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
-            loadTreeReports();
-        }
-    });
-};
-
-var updateFolder = function (treeNode, isCancel) {
-    if (folderUID.indexOf(treeNode.id) != -1) {
-        folderId = 0;
-    } else {
-        folderId = treeNode.id.split('-');
-        folderId = folderId[1];
-    }
-    $.ajax({
-        headers: {
-            'X-CSRF-TOKEN': CSRF_TOKEN
-        },
-        url: "/api/v1/folders/" + folderId,
-        dataType: "json",
-        type: "PUT",
-        data: {
-            name: treeNode.name
-        },
-        success: function (data) {
-            $('#folder_id').val(0);
-            $('#folder_name').val('');
-            showLog((isCancel ? "<span style='color:red'>" : "") + "[ " + getTime() + " onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>" : ""));
-        }
-    });
-};
-
-var updateVariable = function (treeNode, isCancel) {
-    if (folderUID.indexOf(treeNode.id) != -1) {
-        folderId = 0;
-    } else {
-        folderId = treeNode.id.split('-');
-        folderId = folderId[1];
-    }
-    $.ajax({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        url: "/api/v1/variable/" + folderId,
-        dataType: "json",
-        type: "PUT",
-        data: {
-            name: treeNode.name
-        },
-        success: function (data) {
-            $('#folder_id').val(0);
-            $('#folder_name').val('');
-            showLog((isCancel ? "<span style='color:red'>" : "") + "[ " + getTime() + " onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>" : ""));
-        }
-    });
-};
-
-var showLog = function (str) {
-    if (!log) log = $("#log");
-    log.append("<li class='" + className + "'>" + str + "</li>");
-    if (log.children("li").length > 8) {
-        log.get(0).removeChild(log.children("li")[0]);
-    }
-};
-
 var getTime = function () {
     var now = new Date(),
         h = now.getHours(),
@@ -113,46 +11,6 @@ var getTime = function () {
 };
 
 var folderUID = ['my-001', 'sha-001', 'pub-001'];
-
-
-
-
-var saveVariable = function (tree, treeNode, variableName, variableDescription, parentId) {
-    if (folderUID.indexOf(parentId) != -1) {
-        folderId = 0;
-    } else {
-        parent = parentId.split('-');
-        folderId = parent[1];
-    }
-    $.ajax({
-        url: "/api/v1/sharedVariable",
-        dataType: "json",
-        type: "POST",
-        data: {
-            name: variableName,
-            type: 'OWNER',
-            description: variableDescription,
-            folder_id: folderId
-        },
-        success: function (data) {
-            $('#folder_id').val(0);
-            $('#variable_name').val('');
-            $('#variable_description').text('');
-            tree.addNodes(treeNode, {
-                id:  'var-' + data.statistical_variable_id,
-                pId: parent,
-                isParent: false,
-                name: variableName
-            });
-            $('#variableModal').modal('hide');
-        }
-    });
-};
-
-var newCount = 1;
-var newFolder = 1;
-var newVariable = 1;
-var zNodes = [];
 
 var treeReport = {
     init: function () {
@@ -200,7 +58,8 @@ var treeReport = {
                     var zTree = $.fn.zTree.getZTreeObj("treeReports");
                     $('#folderModal').modal('show');
                     $('#folder_id').val(treeNode.id);
-                    $('#saveFolder').click(function () {
+                    $('#folderModal').off("click", "button#saveFolder");
+                    $('#folderModal').on("click", "button#saveFolder", function () {
                         treeReport.saveFolder(zTree, treeNode, $('#folder_name').val(), $('#folder_id').val());
                     });
                     return false;
@@ -208,10 +67,11 @@ var treeReport = {
                 var btnShared = $("#addSharedRptBtn_" + treeNode.tId);
                 if (btnShared) btnShared.bind("click", function () {
                     var zTree = $.fn.zTree.getZTreeObj("treeReports");
-                    $('#sharedModal').modal('show');
-                    $( ".shared-variable-complete" ).autocomplete( "option", "appendTo", ".eventInsForm" );
-                    $('#variable_id').val(treeNode.id);
-                    $('#saveSharedReport').click(function () {
+                    $('#mdlSharedReport').modal('show');
+                    $( ".shared-report-complete" ).autocomplete( "option", "appendTo", ".eventInsForm" );
+                    $('#report_id').val(treeNode.id);
+                    $('#mdlSharedReport').off("click", "button#btnSaveSharedReport");
+                    $('#mdlSharedReport').on("click", "button#btnSaveSharedReport", function () {
                         treeReport.saveSharedReport(zTree, treeNode, $('#shared_name').val());
                     });
                     return false;
@@ -255,7 +115,7 @@ var treeReport = {
                     flag = true;
                 }
                 return flag;
-            },
+            }
         },
         data: {
             simpleData: {
@@ -267,23 +127,23 @@ var treeReport = {
                 return false;
             },
             beforeEditName: function (treeId, treeNode) {
-    className = (className === "dark" ? "" : "dark");
-    showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
-    var zTree = $.fn.zTree.getZTreeObj("treeReports");
-    zTree.selectNode(treeNode);
-    //confirm
-    //return confirm("Start node '" + treeNode.name + "' editorial status?");
-},
+                className = (className === "dark" ? "" : "dark");
+                treeReport.showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+                var zTree = $.fn.zTree.getZTreeObj("treeReports");
+                zTree.selectNode(treeNode);
+                //confirm
+                //return confirm("Start node '" + treeNode.name + "' editorial status?");
+            },
             beforeRemove: function (treeId, treeNode) {
                 className = (className === "dark" ? "" : "dark");
-                showLog("[ " + getTime() + " beforeRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+                treeReport.showLog("[ " + getTime() + " beforeRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
                 var zTree = $.fn.zTree.getZTreeObj("treeReports");
                 zTree.selectNode(treeNode);
                 return confirm("Confirm delete node '" + treeNode.name + "-" + treeNode.id + "' it?");
             },
             beforeRename: function (treeId, treeNode, newName, isCancel) {
                 className = (className === "dark" ? "" : "dark");
-                showLog((isCancel ? "<span style='color:red'>" : "") + "[ " + getTime() + " beforeRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>" : ""));
+                treeReport.showLog((isCancel ? "<span style='color:red'>" : "") + "[ " + getTime() + " beforeRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>" : ""));
                 if (newName.length == 0) {
                     alert("Debe introducir el nombre.");
                     var zTree = $.fn.zTree.getZTreeObj("treeReports");
@@ -296,17 +156,26 @@ var treeReport = {
             },
             onRemove: function (e, treeId, treeNode) {
                 if (treeNode.isParent) {
-                    removeFolder(treeNode);
+                    treeReport.removeFolder(treeNode);
                 } else {
-                    removeVariable(treeNode);
+                    treeReport.removeReport(treeNode);
                 }
-                //showLog("[ " + getTime() + " onRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+                //treeReport.showLog("[ " + getTime() + " onRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
             },
             onRename: function (e, treeId, treeNode, isCancel) {
                 if (treeNode.isParent) {
-                    updateFolder(treeNode, isCancel);
-                } else {
-                    updateVariable(treeNode, isCancel);
+                    treeReport.updateFolder(treeNode, isCancel);
+                }
+            },
+            onClick: function (event, treeId, treeNode, clickFlag) {
+                //reportes
+                var isNotPub = false;
+                if(typeof treeNode.pId == 'string' && treeNode.pId.indexOf('-') > -1){
+                    var typepId = treeNode.pId.split('-');
+                    isNotPub = true;
+                }
+                if (!treeNode.isParent && isNotPub) {
+                    treeReport.pivot(event, treeId, treeNode, clickFlag);
                 }
             }
         }
@@ -331,10 +200,11 @@ treeReport.template = {
 
 treeReport.saveFolder = function (tree, treeNode, folderName, parentId) {
     if (folderUID.indexOf(parentId) != -1) {
-        parentId = 0;
+        parent = parentId.split('-');
+        sendParentId = 0;
     } else {
         parent = parentId.split('-');
-        parentId = parent[1];
+        sendParentId = parent[1];
     }
     $.ajax({
         headers: {
@@ -345,7 +215,7 @@ treeReport.saveFolder = function (tree, treeNode, folderName, parentId) {
         type: "POST",
         data: {
             name: folderName,
-            parent_id: parentId
+            parent_id: sendParentId
         },
         success: function (data) {
             $('#folder_id').val(0);
@@ -360,41 +230,130 @@ treeReport.saveFolder = function (tree, treeNode, folderName, parentId) {
         }
     });
 };
+treeReport.updateFolder = function (treeNode, isCancel) {
+    if (folderUID.indexOf(treeNode.id) != -1) {
+        folderId = 0;
+    } else {
+        folderId = treeNode.id.split('-');
+        folderId = folderId[1];
+    }
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': CSRF_TOKEN},
+        url: "/api/v1/folders/" + folderId,
+        dataType: "json",
+        type: "PUT",
+        data: {
+            name: treeNode.name
+        },
+        success: function (data) {
+            $('#folder_id').val(0);
+            $('#folder_name').val('');
+            //treeReport.showLog((isCancel ? "<span style='color:red'>" : "") + "[ " + getTime() + " onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>" : ""));
+        }
+    });
+};
+treeReport.removeFolder = function (treeNode) {
+    if (folderUID.indexOf(treeNode.id) != -1) {
+        folderId = 0;
+    } else {
+        folderId = treeNode.id.split('-');
+        folderId = folderId[1];
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': CSRF_TOKEN
+        },
+        url: "/api/v1/folders/" + folderId,
+        type: "DELETE",
+        success: function (data) {
+            $('#folder_id').val(0);
+            $('#folder_name').val('');
 
+            treeReport.showLog("[ " + getTime() + " onRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+        }
+    });
+};
 treeReport.saveSharedReport = function (tree, treeNode, email) {
     if (folderUID.indexOf(treeNode.id) != -1) {
-        variableId = 0;
+        ReportId = 0;
     } else {
         parent = treeNode.id.split('-');
-        variableId = parent[1];
+        ReportId = parent[1];
     }
     $folderId = treeNode.pId.split('-');
     $folderId = $folderId[1];
     $.ajax({
-        url: "/api/v1/sharedVariable",
+        url: "/api/v1/sharedReports",
         dataType: "json",
         type: "POST",
         data: {
-            variableId: variableId,
+            reportId: ReportId,
             type: 'SHARED',
             email: email,
             folder_id: $folderId
         },
         success: function (data) {
-            $('#variable_id').val(0);
+            $('#report_id').val(0);
             $('#shared_name').val('');
-            $('#sharedModal').modal('hide');
+            $('#mdlSharedReport').modal('hide');
         }
     });
 };
-treeReport.pivot = function () {
+
+treeReport.removeReport = function (treeNode) {
+    switch (treeNode.pId)
+    {
+        case 'my-001':
+            if (folderUID.indexOf(treeNode.id) != -1) {
+                ReportId = 0;
+            } else {
+                ReportId = treeNode.id.split('-');
+                ReportId = ReportId[1];
+            }
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': CSRF_TOKEN},
+                url: "/api/v1/reports/" + ReportId,
+                //dataType: "json",
+                type: "DELETE",
+                success: function (data) {
+                    //change
+                    treeReport.showLog("[ " + getTime() + " onRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+                    //loadTreeReports();
+                }
+            });
+            break;
+        case 'sha-001':
+            var sharedId = treeNode.shaId;
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': CSRF_TOKEN},
+                url: "/api/v1/sharedReports/" + sharedId,
+                //dataType: "json",
+                type: "DELETE",
+                success: function (data) {
+                    //change
+                    treeReport.showLog("[ " + getTime() + " onRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+                    //loadTreeReports();
+                }
+            });
+            break;
+        case 'pub-001':
+            break;
+    }
+};
+
+treeReport.showLog = function (str) {
+    if (!log) log = $("#log");
+    log.append("<li class='" + className + "'>" + str + "</li>");
+    if (log.children("li").length > 8) {
+        log.get(0).removeChild(log.children("li")[0]);
+    }
+};
+treeReport.pivot = function (event, treeId, treeNode, clickFlag) {
     var derivers = $.pivotUtilities.derivers;
     var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.gchart_renderers);
     $.ajax({
-        headers: {
-            'X-CSRF-TOKEN': CSRF_TOKEN
-        },
-        url: "/data/comercializacion",
+        headers: {'X-CSRF-TOKEN': CSRF_TOKEN},
+        url: "/api/v1/pivot/"+treeNode.name+"/build",
         dataType: "json",
         type: "GET",
         success: function (mps) {
@@ -408,49 +367,29 @@ treeReport.pivot = function () {
              var numberFormat = $.pivotUtilities.numberFormat;
              var intFormat = numberFormat({digitsAfterDecimal: 0});
             $("#outputGrafico").pivot(mps, {
-                rows: ["variable_estadistica"],
-                cols: ["d1_mes"],
-                aggregator: sum(intFormat)(["cantidad"]),
+                rows: [attributes[0]],
+                cols: [attributes[1]],
+                aggregator: sum(intFormat)([attributes[1]]),
                 renderer: $.pivotUtilities.renderers["Area Chart"],
                 rendererOptions: { output: { size: {width: 600, height: 600} } }
             });
-
+            generateVariablesTree(attributes, mps, renderers);
             var utils = $.pivotUtilities;
             var heatmap =  utils.renderers["Heatmap"];
             var sumOverSum =  utils.aggregators["Sum over Sum"];
 
             $("#outputTabla").pivot(
                 mps, {
-                    rows: ["variable_estadistica"],
+                    rows: [attributes[0]],
                     cols: attributes.splice(2),
-                    aggregator: sum(intFormat)(["cantidad"]),
+                    aggregator: sum(intFormat)([attributes[1]]),
                     renderer: heatmap,
                     rendererOptions: { c3: { size: {width: 100, height: 100} } }
                 });
+
         }
     });
 };
-//auto complete
-// $( "#shared_name" ).autocomplete({
-//     source: function( request, response ) {
-//         $.ajax( {
-//             url: "/api/v1/sharedVariable/email",
-//             dataType: "json",
-//             data: {
-//                 q: request.term
-//             },
-//             success: function( data ) {
-//                 $('.ui-helper-hidden-accessible').attr('style', 'display: none')
-//                 // Handle 'no match' indicated by [ "" ] response
-//                 response( data.length === 1 && data[ 0 ].length === 0 ? [] : data );
-//             }
-//         } );
-//     },
-//     minLength: 3,
-//     select: function( event, ui ) {
-//         //
-//     }
-// } );
 $(document).ready(function () {
     treeReport.init();
 });

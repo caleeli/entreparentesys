@@ -92,9 +92,9 @@ class ImportExcelController extends Controller
         set_time_limit(-1);
         $reportName = $request->get('report_name');
         $import->readHeaders();
-        $import->saveVariablesDimensions($reportName);
+        $folder_id = $import->saveVariablesDimensions($reportName);
         $import->loadAssociatedValues();
-        $import->createReport($reportName);
+        $import->createReport($reportName, $folder_id);
         $import->saveAssociatedValues();
         $import->loadData();
     }

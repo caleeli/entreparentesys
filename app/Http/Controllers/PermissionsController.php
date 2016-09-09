@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Bican\Roles\Models\Permission as ModelBase;
+use Illuminate\Support\Facades\Input;
 
 
 class PermissionsController extends Controller
@@ -37,7 +38,12 @@ class PermissionsController extends Controller
     {
         /* @var $model ModelBase */
         $model = ModelBase::find($permission);
-        $model->fill($request->json()->all());
+        $data = Input::All();
+        $model->name = $data['name'];
+        $model->slug = $data['slug'];
+        $model->description = $data['description'];
+        $model->save();
+        return $model;
     }
 
     public function destroy($permission)
@@ -47,12 +53,4 @@ class PermissionsController extends Controller
         $model->delete();
     }
 
-    public function attach($id)
-    {
-        /* @var $model ModelBase */
-        $user = User::find($id);
-        $user->attachRole($adminRole);
-        $model = ModelBase::find($permission);
-        $model->delete();
-    }
 }

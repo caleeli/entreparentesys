@@ -1,3 +1,5 @@
+//Elimnar este archivo
+
 google.load("visualization", "1", {packages: ["corechart", "charteditor"]});
 $(function () {
     var derivers = $.pivotUtilities.derivers;
@@ -25,10 +27,6 @@ $(function () {
             false,
             'es'
         );
-
-
-
-
 
         //hidden fields
         var tr = $('tr', '#outputGrafico');
