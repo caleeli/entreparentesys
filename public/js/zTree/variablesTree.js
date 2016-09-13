@@ -56,6 +56,7 @@ var generateVariables = function () {
             renderers: renderersVar,
             cols: cols,
             rows: rows,
+            vals: [cols[1]],
             rendererName: $('.pvtRenderer').val()
         },
         true,
