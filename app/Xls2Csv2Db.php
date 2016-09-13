@@ -161,7 +161,7 @@ class Xls2Csv2Db
                 'name' => $reportName,
         ]);
         if (!$folder->exists) {
-            $folder->parent_id = 0;
+            $folder->parent_id = null;
             $folder->owner_id = Auth::user() ? Auth::user()->id : 1;
             Auth::user() ? Auth::user()->id : 1;
             $folder->save();
