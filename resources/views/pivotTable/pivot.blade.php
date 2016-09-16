@@ -45,7 +45,11 @@ function pivotChangeTab(a) {
 @endpush
 
 @section('content')
-
+<style>
+#outputGrafico {
+    transform: scale(0.6) translate(-35%,-30%);
+}
+</style>
 <div class="container">
     <div class="row">
         <div class="col-md-12 nopadding">

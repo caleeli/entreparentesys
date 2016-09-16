@@ -94,4 +94,8 @@ table.pvtTable tbody tr td {
 }
 .pvtCheckContainer p{ margin: 5px; }
 
-.pvtRendererArea { padding: 5px;}
+.pvtRendererArea { padding: 5px;}}
+
+#outputGrafico {
+    transform: scale(0.6) translate(-35%,-30%);
+}
