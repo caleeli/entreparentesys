@@ -26,4 +26,7 @@ return [
     'not_excel_file' => 'No es un archivo Excel',
     'import' => 'Importar',
     'finish_import' => 'Finalizar Carga',
+    'report_name' => 'Nombre del reporte',
+    'variables' => 'Variables',
+    'dimensions' => 'Dimensiones',
 ];

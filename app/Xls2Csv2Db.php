@@ -89,7 +89,7 @@ class Xls2Csv2Db
             $table->string($this->columns[0]);
             $table->double($this->columns[1]);
             foreach ($this->columns as $i => $column) {
-                if ($i < 2) {
+                if ($i < 2 || !trim($column)) {
                     continue;
                 }
                 $table->string($column);
