@@ -15,7 +15,7 @@ class CreateStatisticalVariablesTable extends Migration
         Schema::create('statistical_variables', function (Blueprint $table) {
             $table->increments('id');
             $table->string('type')->nullable();
-            $table->string('name')->unique();
+            $table->string('name')->nullable();
             $table->string('description')->nullable();
             $table->timestamps();
         });

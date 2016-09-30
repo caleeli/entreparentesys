@@ -16,7 +16,7 @@ class CreateAssociatedValuesTable extends Migration
             $table->increments('id');
             $table->integer('dimension_id');
             //$table->foreign('dimension_id')->references('id')->on('dimensions');
-            $table->string('value');
+            $table->string('value')->nullable();
             $table->timestamps();
         });
     }

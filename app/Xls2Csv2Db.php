@@ -62,8 +62,22 @@ class Xls2Csv2Db
         $line = substr(fgets($handle), 0, -1);
         fclose($handle);
         $this->columns = explode("\t", $line);
-        foreach($this->columns as &$column) {
+        foreach($this->columns as $i=>&$column) {
+            $column = str_replace(
+                ['á','é','í','ó','ú','Á','É','Í','Ó','Ú'],
+                ['a','e','i','o','u','A','E','I','O','U'],
+                $column
+            );
             $column = preg_replace('/[^a-z0-9]+/i', '_', $column);
+            if(empty($column)) {
+                $column = "Columna_" . $this->getNameFromNumber($i);
+            }
+        }
+        foreach($this->columns as $i=>&$column) {
+            $ii = array_search($column, $this->columns, true);
+            if($i!==$ii) {
+                $column = "Columna_" . $this->getNameFromNumber($i);
+            }
         }
         $this->createTable();
         $sql = "COPY ".$this->table_name." FROM '$target' WITH DELIMITER '\t' CSV HEADER";
@@ -86,13 +100,13 @@ class Xls2Csv2Db
     {
         Schema::create($this->table_name,
                        function (Blueprint $table) {
-            $table->string($this->columns[0]);
-            $table->double($this->columns[1]);
+            $table->string($this->columns[0])->nullable();
+            $table->double($this->columns[1])->nullable();
             foreach ($this->columns as $i => $column) {
                 if ($i < 2 || !trim($column)) {
                     continue;
                 }
-                $table->string($column);
+                $table->string($column)->nullable();
             }
         });
     }
@@ -223,5 +237,17 @@ class Xls2Csv2Db
     {
         $sql = "DROP TABLE ".$this->table_name;
         DB::statement($sql);
+    }
+
+    function getNameFromNumber($num)
+    {
+        $numeric = ($num - 1) % 26;
+        $letter = chr(65 + $numeric);
+        $num2 = intval(($num - 1) / 26);
+        if ($num2 > 0) {
+            return getNameFromNumber($num2).$letter;
+        } else {
+            return $letter;
+        }
     }
 }
