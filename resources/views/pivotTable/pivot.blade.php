@@ -28,6 +28,8 @@
 <script src="{{ asset('js/zTree/jquery.ztree.excheck.min.js') }}"></script>
 <script src="{{ asset('js/zTree/jquery.ztree.exedit.min.js') }}"></script>
 
+<script src="{{ asset('js/pivotTable/uds.js') }}"></script>
+<script src="{{ asset('js/pivotTable/corechart.js') }}"></script>
 <script src="{{ asset('js/zTree/variablesTree.js') }}"></script>
 <script src="{{ asset('js/zTree/folderTree.js') }}"></script>
 

@@ -1,6 +1,6 @@
 //Elimnar este archivo
 
-google.load("visualization", "1", {packages: ["corechart", "charteditor"]});
+//google.load("visualization", "1", {packages: ["corechart", "charteditor"]});
 $(function () {
     var derivers = $.pivotUtilities.derivers;
     var renderers = $.extend($.pivotUtilities.renderers,

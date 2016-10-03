@@ -47,8 +47,6 @@ var generateVariables = function () {
     if (cols.length == 0 && rows.length == 0) {
         return true;
     }
-    console.log(cols);
-    console.log(rows);
 
     $("#outputGrafico").pivotUI(
         mpsVar,
@@ -56,7 +54,6 @@ var generateVariables = function () {
             renderers: renderersVar,
             cols: cols,
             rows: rows,
-            vals: [cols[1]],
             rendererName: $('.pvtRenderer').val()
         },
         true,

@@ -270,9 +270,9 @@
             destroy: true,
             columns: [
                 {data: "id", title: "Id"},
-                {data: "name", title: "Nombre"},
-                {data: "slug", title: "Slug"},
-                {data: "description", title: "Descripcion"},
+                {data: "name", title: "Rol"},
+                {data: "slug", title: "Código"},
+                {data: "description", title: "Descripción"},
                 {data: "level", title: "Nivel"},
                 {data: "created_at", title: "Fecha de Creacion"},
                 {data: "updated_at", title: "Fecha de Modificacion"},
@@ -360,8 +360,8 @@
             columns: [
                 {data: "id", title:"Id"},
                 {data: "name", title:"Nombre"},
-                {data: "slug", title:"Slug"},
-                {data: "description", title:"Descripcion"},
+                {data: "slug", title:"Código"},
+                {data: "description", title:"Descripción"},
                 {data: "created_at", title:"Fecha de Creacion"},
                 {data: "updated_at", title:"Fecha de Modificacion"},
                 {
@@ -440,7 +440,7 @@
                                 </div>
                             </div>
                             <div class="tab-content" id="tab-roles" style="display:none">
-                                <p class="text-right"><button type="button" class="btn btn-primary" id="addRole">Adicionar Role</button></p>
+                                <p class="text-right"><button type="button" class="btn btn-primary" id="addRole">Adicionar Rol</button></p>
                                 <div class="ibox-content">
                                     <div class="form-group">
                                         <div class="ibox float-e-margins">

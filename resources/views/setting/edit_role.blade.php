@@ -11,17 +11,17 @@
                 <form>
                     <input type="hidden" id="roleId" value="">
                     <div class="form-group ">
-                        <label for="recipient-name" class="control-label">Nombre</label>
+                        <label for="recipient-name" class="control-label">Rol</label>
                         <input type="text" class="form-control" id="nameRole" required="required"
-                               placeholder="Nombre">
+                               placeholder="Rol">
                     </div>
                     <div class="form-group ">
-                        <label for="recipient-name" class="control-label">Slug</label>
+                        <label for="recipient-name" class="control-label">Código</label>
                         <input type="text" class="form-control" id="slugRole" required="required"
-                               placeholder="Slug">
+                               placeholder="Código">
                     </div>
                     <div class="form-group">
-                        <label for="message-text" class="control-label">Descripcion</label>
+                        <label for="message-text" class="control-label">Descripción</label>
                         <textarea class="form-control" id="descriptionRole"></textarea>
                     </div>
                     <div class="form-group ">
