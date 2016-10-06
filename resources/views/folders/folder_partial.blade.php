@@ -26,11 +26,10 @@
                             <ul id="foldersTree" class="ztree"></ul>
                         </div>
                         <div class="zTreeDemoBackground left" id="variablesPivotRender" style="display: none; margin-left: 10px;">
+                            <div style="display:none;">
                             <label for="selectRender">Graficos</label>
                             <div id="selectRender">
                             </div>
-                            <label for="selectAgregator">Agregado</label>
-                            <div id="selectAgregator">
 
                             </div>
                             <label for="variablesTree">Variables</label>

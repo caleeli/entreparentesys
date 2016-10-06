@@ -96,7 +96,7 @@ var generateVariablesTree = function (data, mps, renderers) {
     var zNodesVar = [];
     var node = {};
     node.id = 'var-001';
-    node.name = 'Variables';
+    node.name = 'Dimensiones';
     node.pId = 0;
     node.isParent = true;
     node.drag = false;
@@ -113,7 +113,7 @@ var generateVariablesTree = function (data, mps, renderers) {
     });
     var node = {};
     node.id = 'rows-001'
-    node.name = 'Rows';
+    node.name = 'Filas (Eje-Y)';
     node.pId = 0;
     node.isParent = true;
     node.drag = false;
@@ -121,7 +121,7 @@ var generateVariablesTree = function (data, mps, renderers) {
 
     var node = {};
     node.id = 'cols-001';
-    node.name = 'Columns';
+    node.name = 'Columnas (Eje-X)';
     node.pId = 0;
     node.isParent = true;
     node.drag = false;
