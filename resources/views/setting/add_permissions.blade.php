@@ -15,7 +15,7 @@
                                placeholder="Nombre">
                     </div>
                     <div class="form-group ">
-                        <label for="recipient-name" class="control-label">Slug</label>
+                        <label for="recipient-name" class="control-label">Referencia</label>
                         <input type="text" class="form-control" id="slugPermission" required="required"
                                placeholder="Slug">
                     </div>

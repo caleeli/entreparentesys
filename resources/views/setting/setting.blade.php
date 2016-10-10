@@ -271,7 +271,7 @@
             columns: [
                 {data: "id", title: "Id"},
                 {data: "name", title: "Rol"},
-                {data: "slug", title: "Código"},
+                {data: "slug", title: "Ref."},
                 {data: "description", title: "Descripción"},
                 {data: "level", title: "Nivel"},
                 {data: "created_at", title: "Fecha de Creacion"},
@@ -360,7 +360,7 @@
             columns: [
                 {data: "id", title:"Id"},
                 {data: "name", title:"Nombre"},
-                {data: "slug", title:"Código"},
+                {data: "slug", title:"Ref."},
                 {data: "description", title:"Descripción"},
                 {data: "created_at", title:"Fecha de Creacion"},
                 {data: "updated_at", title:"Fecha de Modificacion"},
