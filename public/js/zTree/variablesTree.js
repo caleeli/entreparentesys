@@ -69,6 +69,7 @@ var generateVariables = function () {
     $('#selectRender').html('');
     $('#selectAgregator').html('');
     $('#selectRender').html($('.pvtRenderer'));
+    $('#selectAgregator').append($('.pvtAggregator'));
 };
 
 
