@@ -30,7 +30,7 @@ $(function () {
 
         //hidden fields
         var tr = $('tr', '#outputGrafico');
-        tr[0].style = 'display:none';
+        //tr[0].style = 'display:none';
         //tr[1].style = 'display:none';
 
         $('.pvtAxisContainer').attr('style', 'display:none');

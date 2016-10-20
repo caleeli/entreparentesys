@@ -60,7 +60,7 @@ var generateVariables = function () {
         'es'
     );
     var tr = $('tr', '#outputGrafico');
-    tr[0].style = 'display:none';
+    //tr[0].style = 'display:none';
 
     $('.pvtAxisContainer').attr('style', 'display:none');
     $('.pvtRenderer').attr('style', 'width:130px');
@@ -69,7 +69,6 @@ var generateVariables = function () {
     $('#selectRender').html('');
     $('#selectAgregator').html('');
     $('#selectRender').html($('.pvtRenderer'));
-    $('#selectAgregator').html($('.pvtAggregator'));
 };
 
 
